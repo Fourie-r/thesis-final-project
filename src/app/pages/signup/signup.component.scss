@@ -1,0 +1,39 @@
+@import '../../../styles//variables.scss';
+
+
+.form-wrapper {
+  min-width: 50%;
+  margin-bottom: 10%;
+  margin-top: 10%;
+  border:  2px solid $light-grey;
+  padding: 1em 2em;
+}
+
+#email-input {
+  width: 100%;
+}
+
+#password-input {
+  width: 100%;
+}
+#userName-input {
+  width: 100%;
+}
+
+#firstName-input {
+  width: 100%;
+  margin-right: 1em;
+}
+#lastName-input {
+  width: 100%;
+  margin-left: 0.5em;
+}
+
+h2 {
+  color: $secondary;
+  margin-bottom: 1em;
+}
+
+.name-wrapper {
+width: 100%;
+}

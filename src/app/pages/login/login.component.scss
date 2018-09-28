@@ -1,0 +1,23 @@
+@import '../../../styles//variables.scss';
+
+
+
+h2 {
+  color: $secondary;
+  margin-bottom: 1em;
+}
+
+.form-warapper {
+  min-width: 50%;
+  margin-bottom: 10%;
+  border:  2px solid $light-grey;
+  padding: 1em 2em;
+}
+
+#email-input {
+  width: 100%;
+}
+
+#password-input {
+  width: 100%;
+}

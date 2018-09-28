@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="container-wrapper container d-flex justify-content-center align-items-center">
+  <div class="form-warapper text-center">
+    <h2 class="text-center">Login</h2>
+    <form novalidate [formGroup] ="loginForm" (submit)="submit()">
+      <div class="form-group">
+        <input type="email" class="form-group" id="email-input" placeholder="Enter Email" formControlName="email">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-group" id="password-input" placeholder="Password" formControlName="password">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">Submit</button>
+    </form>
+    <small><a [routerLink]="['/signup']" routerLinkActive="router-link-active" > Need an Account</a></small>
+  </div>
+</div>
