@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AlertModule } from 'ngx-bootstrap';
 
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -35,7 +35,7 @@ import { ChatroomWindowComponent } from './pages/components/chatroom-window/chat
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BsDropdownModule.forRoot(),
+    AlertModule.forRoot(),
     ReactiveFormsModule,
     FormsModule
   ],
