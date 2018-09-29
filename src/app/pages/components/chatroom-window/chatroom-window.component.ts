@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chatroom-window',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chatroom-window.component.scss']
 })
 export class ChatroomWindowComponent implements OnInit {
+
+  public chatroom: Observable<any>;
+
   public dummyData = [
     {
       message: 'I was at the supermarket',
