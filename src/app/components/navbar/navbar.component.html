@@ -2,7 +2,7 @@
   <div class="container">
     <span class="navbar-brand">ChatApp</span>
     <div class="page-links">
-      <ul class="navbar-nav d-flex" *ngIf="!authService.currentUser else loggedOut">
+      <ul class="navbar-nav d-flex" *ngIf="currentUser else loggedOut">
         <li class="nav-item">
           <a [routerLink]="['/chat']" routerLinkActive="active" class="nav-link">Chatrooms</a>
         </li>

@@ -2,7 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
 import { NgxLoadingModule } from 'ngx-loading';
-
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -19,6 +22,8 @@ import { ChatroomListComponent } from './pages/components/chatroom-list/chatroom
 import { ChatroomTitleBarComponent } from './pages/components/chatroom-title-bar/chatroom-title-bar.component';
 import { ChatMessageComponent } from './pages/components/chat-message/chat-message.component';
 import { ChatroomWindowComponent } from './pages/components/chatroom-window/chatroom-window.component';
+
+import { firebase } from '../environments/environment';
 
 
 @NgModule({
@@ -40,7 +45,11 @@ import { ChatroomWindowComponent } from './pages/components/chatroom-window/chat
     AlertModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    NgxLoadingModule.forRoot({})
+    NgxLoadingModule.forRoot({}),
+    AngularFireAuthModule,
+    AngularFireModule.initializeApp(firebase),
+    AngularFirestoreModule,
+    AngularFireStorageModule
 
   ],
   providers: [],

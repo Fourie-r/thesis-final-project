@@ -31,7 +31,6 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.signupForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      userName: ['', [Validators.required]],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]]
     });
@@ -40,15 +39,18 @@ export class SignupComponent implements OnInit, OnDestroy {
   submit() {
     if (this.signupForm.valid) {
       const {
-        email,
-        password,
         firstName,
-        lastName
+        lastName,
+        email,
+        password
       } = this.signupForm.value;
 
       this.subscriptions.push( this.authService.signup(firstName, lastName, email, password).subscribe( success => {
         if (success) {
           this.router.navigate(['/chat']);
+        } else {
+          const failedDbSignUpAlert = new Alert('There was a problem signing up, please try again!', AlertType.Danger);
+          this.alertService.alerts.next(failedDbSignUpAlert);
         }
         this.loadingService.isLoading.next(false);
       }));
