@@ -18,6 +18,7 @@ import { of, from } from 'rxjs';
 })
 export class AuthService {
   public currentUser: Observable<User | null>;
+  public currentUserSnapshot: User | null;
 
   constructor(
     private router: Router,
@@ -34,6 +35,8 @@ export class AuthService {
         }
       })
     );
+
+    this.setCurrentUserSnapshot();
   }
 
   public signup(
@@ -86,5 +89,10 @@ export class AuthService {
         new Alert('You have successfully logged out', AlertType.Success)
       );
     });
+  }
+
+  setCurrentUserSnapshot(): void {
+
+    this.currentUser.subscribe(user => this.currentUserSnapshot = user);
   }
 }

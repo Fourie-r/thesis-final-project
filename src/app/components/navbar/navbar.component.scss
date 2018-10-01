@@ -1,6 +1,11 @@
 @import '../../../styles/variables.scss';
 
-.nav-item, span {
+.nav-item {
+  color: white;
+  cursor: pointer;
+}
+
+span {
   color: white;
 }
 a {
