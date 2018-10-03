@@ -19,16 +19,6 @@ export class ChatroomListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.chatroomService.chatrooms.subscribe(users => console.log(users));
   }
 
-  public startChat(id: string): void {
-    console.log(id);
-    // this.router.navigate(['/chat', id]);
-    let currentUserId = '';
-    this.authService.currentUser.subscribe(user => (currentUserId = user.id));
-    const conversationIdOne = id + '_' + currentUserId;
-    const conversationIdTwo = currentUserId + '_' + id;
-    // this.db.collection('chatrooms').doc(`${conversationIdOne}`)
-  }
 }

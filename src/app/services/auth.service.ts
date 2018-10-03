@@ -55,6 +55,7 @@ export class AuthService {
           const updatedUser = {
             id: user.user.uid,
             email: user.user.email,
+            status: 'online',
             firstName,
             lastName,
             photoUrl:
@@ -74,7 +75,12 @@ export class AuthService {
     return from(
       this.afAuth.auth
         .signInWithEmailAndPassword(email, password)
-        .then(user => true)
+        .then(user => {
+          this.db.doc(`users/${user.user.uid}`).update({
+            status: 'online'
+          });
+          return true;
+        })
         .catch(err => {
           console.log(err);
           return false;
@@ -83,16 +89,23 @@ export class AuthService {
   }
 
   public logout(): void {
-    this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/login']);
-      this.alertService.alerts.next(
-        new Alert('You have successfully logged out', AlertType.Success)
-      );
-    });
+    console.log(this.currentUserSnapshot.id);
+    this.db
+      .doc(`users/${this.currentUserSnapshot.id}`)
+      .update({
+        status: 'offline'
+      })
+      .then(() => {
+        this.afAuth.auth.signOut().then(() => {
+          this.router.navigate(['/login']);
+          this.alertService.alerts.next(
+            new Alert('You have successfully logged out', AlertType.Success)
+          );
+        });
+      });
   }
 
   setCurrentUserSnapshot(): void {
-
-    this.currentUser.subscribe(user => this.currentUserSnapshot = user);
+    this.currentUser.subscribe(user => (this.currentUserSnapshot = user));
   }
 }

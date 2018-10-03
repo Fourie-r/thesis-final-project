@@ -4,6 +4,7 @@ export class User {
   photoUrl: string;
   id?: string;
   email?: string;
+  status?: string;
 
   constructor({firstName, lastName, photoUrl}) {
     this.firstName = firstName;
