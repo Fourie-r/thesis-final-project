@@ -50,7 +50,8 @@ export class ChatroomService {
           this.loadingService.isLoading.next(true);
           db.doc(`chatrooms/${dbId}`).set( {
             id: dbId,
-            unread: false
+            unread: false,
+            owner: this.authService.currentUserSnapshot.id
           });
           return db.doc(`chatrooms/${dbId}`).valueChanges();
 
@@ -108,14 +109,21 @@ export class ChatroomService {
         .valueChanges()
         .subscribe(doc => (currentChatroom = doc['currentChatroom']));
 
-      console.log(currentChatroom);
 
     this.db.doc(`chatrooms/${reverseDbID}`).update({
       unread: true
-    });
+    }).catch(err => console.log('No document to be updated'));
     this.db.collection(`chatrooms/${reverseDbID}/messages`).add(message);
     } else {
       this.db.collection(`chatrooms/${dbId}/messages`).add(message);
     }
+  }
+
+  getChatrooms(): Observable<any> {
+
+    return this.db.collection(`chatrooms`, querryRef => {
+      return querryRef.where('owner', '==', this.authService.currentUserSnapshot.id);
+    }).valueChanges();
+
   }
 }
