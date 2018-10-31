@@ -4,11 +4,13 @@ import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { AuthGuard } from './guards/auth.guard';
+import { BodyContentsComponent } from './body-contents/body-contents.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'board', component: BodyContentsComponent},
   { path: 'chat', canActivate: [AuthGuard],
       children: [
         { path: '', component: ChatComponent },
