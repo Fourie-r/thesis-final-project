@@ -8,6 +8,7 @@ import { CompletedTaskModel } from './../../shared/models/completed-task.model';
 import { TaskService } from './../../services/task.service';
 import { PeoplesModel } from './../../shared/models/peoples.model';
 import { PeoplesService } from './../../services/peoples.service';
+import { User } from 'src/app/classes/user.model';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { PeoplesService } from './../../services/peoples.service';
 })
 export class BoardComponent implements OnInit {
   tasks: TaskModel[] = [];
-  peoples: PeoplesModel[] = [];
+  peoples: User[] = [];
   emitter = EmitterService.get('PeoplesChannel');
   listTeamOne: ProgressTaskModel[] = [];
   listTeamTwo: CompletedTaskModel[] = [];
@@ -31,7 +32,7 @@ export class BoardComponent implements OnInit {
   public seletedTaskTitle: string;
   public selectedTaskStartDate: string;
   public selectedTaskEndDate: string;
-  public seletedTaskPeople: number;
+  public seletedTaskPeople: string;
 
   constructor(
     public taskService: TaskService,
@@ -55,7 +56,7 @@ export class BoardComponent implements OnInit {
   // Get all tasks
   getAllTasks() {
     // Get all tasks
-    this.taskService.getTask().subscribe(
+    this.taskService.getTasks().subscribe(
       tasks => {
         console.log(tasks);
         this.tasks = tasks;
@@ -69,7 +70,7 @@ export class BoardComponent implements OnInit {
 
   // Get ALl Completed Task
   getAllCompletedTask() {
-    this.taskService.getCompletedTask().subscribe(
+    this.taskService.getCompletedTasks().subscribe(
       tasks => {
         this.listTeamTwo = tasks;
       },
@@ -82,7 +83,7 @@ export class BoardComponent implements OnInit {
 
   // Get ALl in-progress Task
   getAllInProgressTask() {
-    this.taskService.getInProgressTask().subscribe(
+    this.taskService.getInProgressTasks().subscribe(
       tasks => {
         this.listTeamOne = tasks;
       },
@@ -96,9 +97,11 @@ export class BoardComponent implements OnInit {
   // Get all peoples
   getAllPeople() {
     // Get all peoples
-    this.peoplesService.getPeoples().subscribe(
+    this.peoplesService.getPeople().subscribe(
       peoples => {
+
         this.peoples = peoples;
+        console.log(peoples);
       },
       err => {
         // Log errors if any
@@ -117,7 +120,7 @@ export class BoardComponent implements OnInit {
     }
     if (data === 'Progress') {
       const object = {
-        id: this.listTeamOne.length,
+        id: item.id,
         title: item.title,
         people: item.people,
         skills: item.skills,

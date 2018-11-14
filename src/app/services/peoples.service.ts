@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { PeoplesModel } from '../shared/models/peoples.model';
 import { Observable } from 'rxjs';
 import { map, take, catchError } from 'rxjs/operators';
+import { User } from 'src/app/classes/user.model';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 
 
 @Injectable()
@@ -12,7 +14,7 @@ export class PeoplesService {
   private peoplesUrl = 'api/getPeoples';
 
   // Resolve HTTP using the constructor
-  constructor(private http: Http) {}
+  constructor(private http: Http, private db: AngularFirestore ) {}
   // private instance variable to hold base url
 
   // Fetch all existing peoples
@@ -30,6 +32,13 @@ export class PeoplesService {
     );
   }
 
+getPeople(): Observable<any> {
+
+  return this.db.collection('users').valueChanges();
+}
+
+
+
   //  Add New peoples
   addPeople(body: Object): Observable<PeoplesModel[]> {
     // let bodyString = JSON.stringify(body); // Stringify payload
@@ -42,5 +51,12 @@ export class PeoplesService {
       catchError((error: any) =>
         Observable.throw(error.json().error || 'Server error')
       )); // ...errors if any
+  }
+
+  addNewPeople(body: Object) {
+
+    this.db.collection('users')
+    .add(body)
+    .catch(err => console.log('Error while trying to add new user to db'));
   }
 }

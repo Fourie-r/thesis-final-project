@@ -10,6 +10,7 @@ import { SkillsService } from './../../services/skills.service';
 
 import { TaskModel } from './../../shared/models/tasks.model';
 import { TaskService } from './../../services/task.service';
+import { User } from 'src/app/classes/user.model';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class AddTaskComponent implements OnInit {
 
   emitter = EmitterService.get('PeoplesChannel');
 
-  peoples: PeoplesModel[] = [];
+  peoples: User[] = [];
   skills: SkillModel[] = [];
   tasks: TaskModel[] = [];
 
@@ -55,7 +56,7 @@ export class AddTaskComponent implements OnInit {
 
   getAllPeople() {
     // Get all peoples
-    this.peoplesService.getPeoples()
+    this.peoplesService.getPeople()
       .subscribe(
         peoples => {
           this.peoples = peoples;
@@ -84,31 +85,15 @@ export class AddTaskComponent implements OnInit {
       title: this.title,
       people: this.selectedPeople,
       skills: this.selectedSkills,
-      startDate: this.startDate.toLocaleDateString(),
-      endDate: this.endDate.toLocaleDateString(),
-      start: this.startDate.toLocaleDateString(),
-      end: this.endDate.toLocaleDateString(),
+      startDate: this.startDate,
+      endDate: this.endDate,
+      start: this.startDate,
+      end: this.endDate,
       backgroundColor: '#fcf8e3'
     };
 
 
-    let taskOperation: Observable<TaskModel[]>;
 
-    taskOperation = this.taskService.addTask(taskObject);
-
-    // Subscribe to observable
-    taskOperation.subscribe(
-      task => {
-        this.emitter.emit({ msg: 'BroadcastTask', data: task });
-        this.title = '';
-        this.selectedPeople = 1;
-        this.selectedSkills = [];
-
-        // this.toastr.success('One More Task Added In Board!');
-      },
-      err => {
-        // Log errors if any
-        console.log(err);
-      });
+    this.taskService.addTasks(taskObject);
   }
 }

@@ -1,8 +1,8 @@
 export class CompletedTaskModel {
 
-  id: number;
+  id: string;
   title: string;
-  people: number;
+  people: string;
   skills: Array<any>;
   startDate: Date;
   endDate: Date;
