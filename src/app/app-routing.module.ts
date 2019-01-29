@@ -5,12 +5,14 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { ChatComponent } from './pages/chat/chat.component';
 import { AuthGuard } from './guards/auth.guard';
 import { BodyContentsComponent } from './body-contents/body-contents.component';
+import { BacklogComponent } from './pages/backlog/backlog-component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/login' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'board', component: BodyContentsComponent},
+  { path: 'backlog', component: BacklogComponent},
   { path: 'chat', canActivate: [AuthGuard],
       children: [
         { path: '', component: ChatComponent },

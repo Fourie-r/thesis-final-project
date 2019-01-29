@@ -1,0 +1,24 @@
+<h1>Backlog</h1>
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Task description</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let task of backlogTasks; let i = index">
+      <td>
+        <span>{{ i + 1 }}</span>
+      </td>
+      <td>
+        <span>{{ task.title }}</span>
+      </td>
+      <td>
+        <span>{{ task.startDate }}</span>
+      </td>
+        <button (click)="moveToSprint(i)">Move to sprint</button>
+    </tr>
+  </table>
+</body>

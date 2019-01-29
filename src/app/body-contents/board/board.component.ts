@@ -29,10 +29,13 @@ export class BoardComponent implements OnInit {
     { category: 'Completed', value: 2 }
   ];
 
+  private selectedTask: TaskModel = {};
+  private selectedTaskData: string;
   public seletedTaskTitle: string;
   public selectedTaskStartDate: string;
   public selectedTaskEndDate: string;
   public seletedTaskPeople: string;
+
 
   constructor(
     public taskService: TaskService,
@@ -112,7 +115,6 @@ export class BoardComponent implements OnInit {
 
   // Drop on success
   addTo(event: any, item, data) {
-    console.log(event);
     console.log(item);
     console.log(data);
     if (data === 'ToDo') {
@@ -131,10 +133,9 @@ export class BoardComponent implements OnInit {
         backgroundColor: '#dff0d8'
       };
 
-      let taskOperation: Observable<ProgressTaskModel[]>;
+      this.taskService.addTasksInProgress(object);
 
-      taskOperation = this.taskService.addTaskInProgress(object);
-
+      /*
       // Subscribe to observable
       taskOperation.subscribe(
         task => {
@@ -145,12 +146,13 @@ export class BoardComponent implements OnInit {
           // Log errors if any
           console.log(err);
         }
-      );
+      ); */
+
     }
 
     if (data === 'Completed') {
       const object = {
-        id: this.listTeamTwo.length,
+        id: item.id,
         title: item.title,
         people: item.people,
         skills: item.skills,
@@ -160,10 +162,9 @@ export class BoardComponent implements OnInit {
         end: item.endDate,
         backgroundColor: '#d9edf7'
       };
-      let taskOperation: Observable<CompletedTaskModel[]>;
 
-      taskOperation = this.taskService.addTaskInComplete(object);
-
+      this.taskService.addTasksInCompleted(object);
+      /*
       // Subscribe to observable
       taskOperation.subscribe(
         task => {
@@ -174,7 +175,7 @@ export class BoardComponent implements OnInit {
           // Log errors if any
           console.log(err);
         }
-      );
+      ); */
     }
     this.pieData[0].value = this.listTeamOne.length;
     this.pieData[1].value = this.listTeamTwo.length;
@@ -186,15 +187,44 @@ export class BoardComponent implements OnInit {
   }
 
   // Open Task Popup details
-  openTask(task) {
+  openTask(task, data: string) {
     this.opened = true;
     console.log(task);
+    this.selectedTask = task;
     this.seletedTaskTitle = task.title;
     this.selectedTaskStartDate = task.startDate;
     this.selectedTaskEndDate = task.endDate;
     this.seletedTaskPeople = task.people;
+    this.selectedTaskData = data;
   }
   public close() {
     this.opened = false;
+  }
+
+  saveToBacklog() {
+
+    this.deleteTask();
+    this.taskService.db.collection('backlog').doc(this.selectedTask.id).set(this.selectedTask);
+
+    this.close();
+  }
+
+  deleteTask() {
+    console.log(this.selectedTaskData);
+    if (this.selectedTaskData === 'ToDo') {
+
+      this.taskService.removeTasksInToDo(this.selectedTask.id);
+    }
+
+    if (this.selectedTaskData === 'Progress') {
+
+      this.taskService.removeTasksInProgress(this.selectedTask.id);
+
+    }
+    if (this.selectedTaskData === 'Completed') {
+
+      this.taskService.removeTasksInCompleted(this.selectedTask.id);
+    }
+    this.close();
   }
 }

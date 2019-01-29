@@ -44,6 +44,24 @@
 
         }
       }
+      .backlog-button {
+        background: lighten(#ff585d, 5%);
+        border: none;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      .backlog-button:hover {
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+        background: #ff585d;
+
+      }
     }
   }
+}
+
+.panel-body {
+
+  min-height: 200px;
 }

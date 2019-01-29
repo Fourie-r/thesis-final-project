@@ -48,6 +48,7 @@ import { BoardComponent } from './body-contents/board/board.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
+
 import { firebase } from '../environments/environment';
 
 // services
@@ -56,6 +57,7 @@ import { PeoplesService } from './services/peoples.service';
 import { TaskService } from './services/task.service';
 import { SkillsService } from './services/skills.service';
 import { TaskContributionService } from './services/task-contribution.service';
+import { BacklogComponent } from './pages/backlog/backlog-component';
 
 
 @NgModule({
@@ -75,7 +77,8 @@ import { TaskContributionService } from './services/task-contribution.service';
     AddTaskComponent,
     BoardComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    BacklogComponent
   ],
   imports: [
     BrowserModule,
