@@ -3,7 +3,7 @@
     <div class="chatroom-list-item">
       <span class="status" [ngClass]="chatRoom.status">
       </span>
-      <a [routerLink]="['/chat', chatRoom.id]"> {{chatRoom.firstName}}</a>
+      <button (click)="passID(chatRoom.id)"> {{chatRoom.firstName}}</button>
     </div>
   </ng-container>
 </div>

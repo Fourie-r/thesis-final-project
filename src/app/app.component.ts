@@ -3,7 +3,8 @@ import {
   OnInit,
   OnDestroy,
   AfterViewChecked,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ViewChild
 } from '@angular/core';
 import { Alert } from './classes/alert';
 import { AlertService } from './services/alert.service';
@@ -19,19 +20,43 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   private subscriptions: Subscription[] = [];
   public alerts: Array<Alert> = [];
   public loading = false;
+  title = 'AngularMaterialGettingStarted';
 
+  @ViewChild('drawer') drawer;
+  isMenuOpen = true;
+  contentMargin = 240;
+  task: string[] = [
+    'Clearning out my closet', 'Take out trash bins', 'Wash car', 'Tank up the motorcycles', 'Go for flight training'
+  ];
   constructor(
     private alertService: AlertService,
     private loadingService: LoadingService,
     private cdRef: ChangeDetectorRef
   ) {}
 
+  onToolbarMenuToggle() {
+    console.log('On toolbar toggled', this.isMenuOpen);
+    this.isMenuOpen = !this.isMenuOpen;
+
+    if (!this.isMenuOpen) {
+      this.contentMargin = 70;
+    } else {
+      this.contentMargin = 240;
+    }
+  }
+  // sidenavEvents(str) {
+  //   console.log(str);
+  // }
   ngOnInit() {
     this.subscriptions.push(
       this.alertService.alerts.subscribe(alert => {
         this.alerts.push(alert);
       })
     );
+  }
+
+  toggle() {
+    this.drawer.toggle();
   }
 
   ngAfterViewChecked() {

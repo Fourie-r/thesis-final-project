@@ -1,6 +1,6 @@
 
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
-
+<app-navbar [drawer]= "drawer"></app-navbar>
 
 
 <div class="alert-wrapper">
@@ -8,4 +8,14 @@
       {{alert.text}}
   </alert>
 </div>
-<router-outlet></router-outlet>
+
+<mat-drawer-container class="example-container" [hasBackdrop]="true">
+  <mat-drawer class="drawer" #drawer [mode]="over">
+    <app-chat></app-chat>
+  </mat-drawer>
+  <mat-drawer-content>
+        <router-outlet></router-outlet>
+
+  </mat-drawer-content>
+</mat-drawer-container>
+

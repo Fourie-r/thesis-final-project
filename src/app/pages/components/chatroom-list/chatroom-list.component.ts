@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChatroomService } from '../../../services/chatroom.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -10,6 +10,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
   styleUrls: ['./chatroom-list.component.scss']
 })
 export class ChatroomListComponent implements OnInit {
+
+
+  public chatroomId: string;
   constructor(
     public chatroomService: ChatroomService,
     private router: Router,
@@ -18,8 +21,14 @@ export class ChatroomListComponent implements OnInit {
   ) {}
 
   status = '';
-
+  @Output() valueChange = new EventEmitter();
   ngOnInit() {
+  }
+
+  passID(id) {
+    console.log(id);
+    this.chatroomId = id;
+    this.valueChange.emit(this.chatroomId);
   }
 
   getNotifyUnread(id): string {

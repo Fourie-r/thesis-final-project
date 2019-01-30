@@ -15,8 +15,7 @@ const routes: Routes = [
   { path: 'backlog', component: BacklogComponent},
   { path: 'chat', canActivate: [AuthGuard],
       children: [
-        { path: '', component: ChatComponent },
-        { path: ':chatroomId', component: ChatComponent }] },
+        { path: '', component: ChatComponent } ] },
   { path: '**', redirectTo: '/login' }
 ];
 

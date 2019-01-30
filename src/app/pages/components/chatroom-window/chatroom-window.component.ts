@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChatroomService } from '../../../services/chatroom.service';
@@ -9,9 +9,10 @@ import { LoadingService } from '../../../services/loading.service';
   templateUrl: './chatroom-window.component.html',
   styleUrls: ['./chatroom-window.component.scss']
 })
-export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChecked, OnChanges {
 
   @ViewChild('scrollContainer') private scrollContainer: ElementRef;
+  @Input() chatroomID;
 
   public chatroom: Observable<any>;
   private subscriptions: Subscription[] = [];
@@ -40,13 +41,6 @@ export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChec
   ngOnInit() {
     this.scrollToBottom();
     this.subscriptions.push(
-      this.route.paramMap.subscribe(params => {
-        const chatroomId = params.get('chatroomId');
-        this.chatroomService.changeChatroom.next(chatroomId);
-      })
-    );
-
-    this.subscriptions.push(
       this.chatroomService.selectedChatroomMessages.subscribe(messages => {
         this.messages = messages;
         this.loadingService.isLoading.next(false);
@@ -65,6 +59,13 @@ export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChec
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
+
+ngOnChanges(changes: SimpleChanges) {
+
+  console.log();
+  this.chatroomService.changeChatroom.next(changes.chatroomID.currentValue);
+
+}
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

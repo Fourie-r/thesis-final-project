@@ -1,18 +1,28 @@
 @import '../../../styles/variables.scss';
 
-.nav-item {
+.navbar {
+  background-color: #428bca;
+  display: flex;
+  flex-direction: row;
   color: white;
-  cursor: pointer;
-}
+  .brand {
 
-span {
-  color: white;
-}
-a {
-  color: $light-grey;
-  margin-left: 3em;
+    padding-left: 1em;
+    font-size: 1.5em;
+  }
+  ul{
+    display: flex;
+    flex-direction: row;
+    padding-right: 80px;
+    li {
+      margin: 0px 30px;
+      font-size: 1.2em;
+      cursor: pointer;
+      padding: 5px 10px;
+    }
+    li:hover {
 
-  &.active {
-    border-bottom: 3px solid $gold;
+      border-bottom: 2px solid #ffbf00;
+    }
   }
 }
