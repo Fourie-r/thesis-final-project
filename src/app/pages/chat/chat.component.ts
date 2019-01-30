@@ -9,7 +9,12 @@ export class ChatComponent implements OnInit {
 
   constructor() { }
 
+  public chatroomId;
   ngOnInit() {
   }
 
+  setId(id) {
+    console.log(id);
+    this.chatroomId = id;
+  }
 }

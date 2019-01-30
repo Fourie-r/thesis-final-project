@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/chat';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/board';
   }
 
   private createForm(): void {

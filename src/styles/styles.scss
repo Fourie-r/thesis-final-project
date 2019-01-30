@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'variables';
 @import '../../node_modules/bootstrap/scss/bootstrap';
-
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .container-wrapper {
 height: calc(100vh - 80px) !important;

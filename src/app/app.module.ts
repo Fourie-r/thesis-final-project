@@ -58,6 +58,7 @@ import { TaskService } from './services/task.service';
 import { SkillsService } from './services/skills.service';
 import { TaskContributionService } from './services/task-contribution.service';
 import { BacklogComponent } from './pages/backlog/backlog-component';
+import { MaterialModule } from './shared/materaial-components/matrial.component';
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import { BacklogComponent } from './pages/backlog/backlog-component';
     DropDownsModule,
     DateInputsModule,
     ChartModule,
-    HttpModule
+    HttpModule,
+    MaterialModule
   ],
   providers: [
     EmitterService,

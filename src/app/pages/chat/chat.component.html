@@ -1,5 +1,4 @@
-<app-navbar></app-navbar>
 <div class="container-wrapper container d-flex">
-  <app-chatroom-list class="w-25"></app-chatroom-list>
-  <app-chatroom-window class="w-75"></app-chatroom-window>
+  <app-chatroom-list (valueChange)="setId($event)" class="w-25"></app-chatroom-list>
+  <app-chatroom-window [chatroomID]="chatroomId" lass="w-75"></app-chatroom-window>
 </div>
