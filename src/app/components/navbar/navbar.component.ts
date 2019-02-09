@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { ChatroomService } from 'src/app/services/chatroom.service';
 
 
 @Component({
@@ -11,7 +12,7 @@ export class NavbarComponent implements OnInit {
 
   public currentUser: any = null;
   @Input() drawer;
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, private chatroomService: ChatroomService) { }
 
   ngOnInit() {
     this.authService.currentUser.subscribe( user => this.currentUser = user);
@@ -22,5 +23,6 @@ export class NavbarComponent implements OnInit {
   }
   toggle() {
     this.drawer.toggle();
+    this.chatroomService.chatrooms = this.chatroomService.getChatrooms();
   }
 }

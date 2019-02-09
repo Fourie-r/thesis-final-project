@@ -14,13 +14,15 @@
     align-items:flex-start;
     background-color: $light-grey;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    color: #A098A5;
+    color: #111111;
     border-radius: 8px;
     transition: ease-in 0.2s;
+    cursor: pointer;
   }
 
-  .chatroom-list-item:hoover {
-    background-color: darkblue;
+
+  .chatroom-list-item:hover {
+    background-color:grey;
     color: #ddd;
     transition: ease-in 0.1s;
   }
@@ -48,5 +50,32 @@
 
 .unread {
   background-color: lightcoral;
+}
+
+.startChat_button {
+  width: 40%;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 20px;
+  margin-right: 10px;
+  display: flex;
+  align-items: stretch;
+  white-space: nowrap;
+
+  span {
+    font-size: 0.7em;
+  }
+  align-self: flex-end;
+
+}
+.startChat_button:hover {
+
+    background-color: darken( #A098A5, 10%);
+
+  span {
+  color: white;
+  }
 }
 }

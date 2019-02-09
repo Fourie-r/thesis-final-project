@@ -2,6 +2,8 @@
 
 .chat-message {
   padding: 1.5em;
+  display: flex;
+  flex-direction: row;
 
   .image-wrapper {
     margin-right: 1em;
@@ -12,23 +14,56 @@
       height: 50px;
       width: 50px;
     }
-  // object-fit: cover;
+    // object-fit: cover;
   }
+  .buble {
+    background-color: #f6f6f6;
 
-  .name {
-    text-decoration: underline;
-    font-weight: 600;
-  }
+    .name-row {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-bottom: 0.5em;
 
-  .timestamp {
-    margin-bottom: 1.5em;
-    color: darken($light-grey, 15%);
-  }
+      .name {
+        text-decoration: underline;
+        font-weight: 600;
+        padding: 10px;
+      }
 
-  .message {
-    font-size: 0.8em;
-    color: white;
-    background-color: darken($primary, 5%);
+      .timestamp {
+        color: darken($light-grey, 15%);
+        font-size: 0.4em;
+        display: flex;
+        align-self: center;
+      }
+    }
+
+    .message {
+      font-size: 0.8em;
+      color: black;
+      padding: 10px;
+    }
   }
 }
+.isOwnMessage {
 
+  display: flex;
+  flex-direction: row;
+  .image-wrapper {
+    order: 2;
+  }
+  .buble {
+    order: 1;
+    background-color: #dcf8c6;
+    align-self: flex-start;
+
+    .name-row {
+      display: flex;
+    }
+    .message {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

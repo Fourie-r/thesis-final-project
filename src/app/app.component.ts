@@ -50,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnInit() {
     this.subscriptions.push(
       this.alertService.alerts.subscribe(alert => {
+        console.log(alert);
         this.alerts.push(alert);
       })
     );

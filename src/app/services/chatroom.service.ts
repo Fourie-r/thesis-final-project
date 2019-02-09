@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class ChatroomService {
-  public chatrooms: Observable<any>;
+  public chatrooms: Observable<Array<any>> = of([]);
   public users: Observable<any>;
   public changeChatroom: BehaviorSubject<string | null> = new BehaviorSubject(
     null
@@ -20,22 +20,21 @@ export class ChatroomService {
   public selectedChatroom: Observable<any>;
   public selectedChatroomMessages: Observable<any>;
   public newChatroom: Observable<any>;
-
   constructor(
     private db: AngularFirestore,
     private loadingService: LoadingService,
     private authService: AuthService
   ) {
-    this.chatrooms = db.collection('chatrooms').valueChanges();
+
     this.users = db.collection('users').valueChanges();
     this.selectedChatroom = this.changeChatroom.pipe(
       switchMap(chatroomId => {
+        console.log(chatroomId);
         if (chatroomId) {
-          const dbId = `${
-            this.authService.currentUserSnapshot.id
-          }_${chatroomId}`;
           this.loadingService.isLoading.next(true);
-          return db.doc(`chatrooms/${dbId}`).valueChanges();
+          return db
+            .doc(`chatrooms/${this.authService.currentUserSnapshot.id}/chatrooms/${chatroomId}`)
+            .valueChanges();
         }
         return of(null);
       })
@@ -43,18 +42,22 @@ export class ChatroomService {
 
     this.newChatroom = this.changeChatroom.pipe(
       switchMap(chatroomId => {
+        console.log(chatroomId);
         if (chatroomId) {
-          const dbId = `${
-            this.authService.currentUserSnapshot.id
-            }_${chatroomId}`;
           this.loadingService.isLoading.next(true);
-          db.doc(`chatrooms/${dbId}`).set( {
-            id: dbId,
-            unread: false,
-            owner: this.authService.currentUserSnapshot.id
-          });
-          return db.doc(`chatrooms/${dbId}`).valueChanges();
+          this.db.collection(`users`).doc(chatroomId).valueChanges().subscribe(dbuser => {
 
+            console.log(dbuser);
+            this.db.collection(`chatrooms/${this.authService.currentUserSnapshot.id}/chatrooms`).doc(chatroomId).set({
+              user: dbuser,
+              unread: 0,
+              owner: this.authService.currentUserSnapshot.id
+            });
+
+
+            return this.db.doc(`chatrooms/${this.authService.currentUserSnapshot.id}/chatrooms/${chatroomId}`)
+              .valueChanges();
+          });
         }
         return of(null);
       })
@@ -63,19 +66,21 @@ export class ChatroomService {
     this.selectedChatroomMessages = this.changeChatroom.pipe(
       switchMap(chatroomId => {
         if (chatroomId) {
-          const dbId = `${
-            this.authService.currentUserSnapshot.id
-          }_${chatroomId}`;
+
+          let chatID = '';
+          if (chatroomId < this.authService.currentUserSnapshot.id) {
+            chatID =  chatroomId + this.authService.currentUserSnapshot.id;
+          } else {
+            chatID = this.authService.currentUserSnapshot.id + chatroomId;
+          }
 
           this.loadingService.isLoading.next(true);
-          db.doc(`chatrooms/${dbId}`).update({
-            unread: false
-          });
-          db.doc(`users/${this.authService.currentUserSnapshot.id}`).update({
-            currentChatroom: dbId
-          });
+          db.collection(`chatrooms`).doc(this.authService.currentUserSnapshot.id).update({
+            unread: 0
+          }).catch(err => console.log('this is a new document'));
+
           return db
-            .collection(`chatrooms/${dbId}/messages`, queryRef => {
+            .collection(`messages/${chatID}/messages`, queryRef => {
               return queryRef.orderBy('createdAt', 'asc').limit(50);
             })
             .valueChanges();
@@ -88,10 +93,14 @@ export class ChatroomService {
   }
   public createMessage(msg: string): void {
     const chatroomId = this.changeChatroom.value;
-    const dbId = `${this.authService.currentUserSnapshot.id}_${chatroomId}`;
-    const reverseDbID = `${chatroomId}_${
-      this.authService.currentUserSnapshot.id
-    }`;
+    console.log(chatroomId);
+
+    let chatID = '';
+    if (chatroomId < this.authService.currentUserSnapshot.id) {
+      chatID = chatroomId + this.authService.currentUserSnapshot.id;
+    } else {
+      chatID = this.authService.currentUserSnapshot.id + chatroomId;
+    }
 
     const message = {
       message: msg,
@@ -99,31 +108,20 @@ export class ChatroomService {
       sender: this.authService.currentUserSnapshot
     };
 
-    if ( dbId !== reverseDbID) {
-
-    this.db.collection(`chatrooms/${dbId}/messages`).add(message);
-
-    let currentChatroom = '';
-      this.db
-        .doc(`users/${chatroomId}`)
-        .valueChanges()
-        .subscribe(doc => (currentChatroom = doc['currentChatroom']));
+    this.db.collection(`messages/${chatID}/messages`).add(message);
 
 
-    this.db.doc(`chatrooms/${reverseDbID}`).update({
-      unread: true
-    }).catch(err => console.log('No document to be updated'));
-    this.db.collection(`chatrooms/${reverseDbID}/messages`).add(message);
-    } else {
-      this.db.collection(`chatrooms/${dbId}/messages`).add(message);
-    }
+    /* this.db.doc(`chatrooms/${chatroomId}/${this.authService.currentUserSnapshot.id}`).update({
+      unread: 1
+    }).catch(err => console.log('No document to be updated')); */
+
   }
 
-  getChatrooms(): Observable<any> {
+  public getChatrooms(): Observable<any> {
 
-    return this.db.collection(`chatrooms`, querryRef => {
-      return querryRef.where('owner', '==', this.authService.currentUserSnapshot.id);
-    }).valueChanges();
+      return this.db
+        .collection(`chatrooms/${this.authService.currentUserSnapshot.id}/chatrooms`)
+        .valueChanges();
 
   }
 }

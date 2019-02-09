@@ -1,9 +1,9 @@
 <div class="h-100 d-flex flex-column chatroom-list">
-  <ng-container *ngFor="let chatRoom of chatroomService.users | async">
-    <div class="chatroom-list-item">
-      <span class="status" [ngClass]="chatRoom.status">
-      </span>
-      <button (click)="passID(chatRoom.id)"> {{chatRoom.firstName}}</button>
-    </div>
-  </ng-container>
+  <button class="startChat_button" (click)="startChat()"> <span>+ Chat</span></button>
+<ng-container  *ngFor="let chatRoom of chatroomService.chatrooms | async; let i=index">
+  <div class="chatroom-list-item" [style.background]="selected==i?'#dcf8c6':''" (click)="selected=i" (click)="passID(chatRoom.user.id)">
+    <span class="status" [ngClass]="chatRoom.user.status"> </span>
+    {{chatRoom.user.firstName}}
+  </div>
+</ng-container>
 </div>

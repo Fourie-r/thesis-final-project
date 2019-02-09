@@ -59,6 +59,7 @@ import { SkillsService } from './services/skills.service';
 import { TaskContributionService } from './services/task-contribution.service';
 import { BacklogComponent } from './pages/backlog/backlog-component';
 import { MaterialModule } from './shared/materaial-components/matrial.component';
+import { UserListComponent } from './pages/components/user-list/user-list.component';
 
 
 @NgModule({
@@ -79,7 +80,8 @@ import { MaterialModule } from './shared/materaial-components/matrial.component'
     BoardComponent,
     HeaderComponent,
     FooterComponent,
-    BacklogComponent
+    BacklogComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +114,7 @@ import { MaterialModule } from './shared/materaial-components/matrial.component'
     SkillsService,
     TaskContributionService
   ],
+  entryComponents: [UserListComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

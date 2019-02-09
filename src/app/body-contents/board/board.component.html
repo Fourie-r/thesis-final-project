@@ -26,7 +26,7 @@
                                     <img *ngIf="item.people == people.id" src="{{people.photoUrl}}" alt="{{people.firstName}}">
                                 </span> {{item.title}}
                                 <div class="remaining">
-                                    Remaining {{ item.endDate.toDate() | amDifference: item.startDate.toDate() :'days' : true }} days
+                                    Estimated {{ item.endDate.toDate() | amDifference: item.startDate.toDate() :'days' : true }} days
                                 </div>
                             </li>
                         </ul>
@@ -46,7 +46,7 @@
                                     <img *ngIf="item.people == people.id" src="{{people.photoUrl}}" alt="{{people.firstName}}">
                                 </span> {{item.title}}
                                 <div class="remaining">
-                                    Remaining {{ item.endDate.toDate() | amDifference: item.startDate.toDate() :'days' : true }} days
+                                    Estimated {{ item.endDate.toDate() | amDifference: item.startDate.toDate() :'days' : true }} days
                                 </div>
                             </li>
                         </ul>
