@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ChatroomService } from '../services/chatroom.service';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor() { }
+  constructor(private chatroomService: ChatroomService) {}
   @Input() drawer;
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
+  toggle() {
+
+    console.log('CLICK CLICK');
+    this.drawer.toggle();
+  }
 }

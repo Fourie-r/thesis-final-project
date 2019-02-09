@@ -1,0 +1,26 @@
+<div class="contain">
+  <div class="header">
+    <div class="title">
+      <span (click)="onNoClick()">
+        <mat-icon>close</mat-icon>
+      </span>
+      <h1>
+        New Chat
+      </h1>
+    </div>
+    <div class="input_bar">
+      <input type="text" placeholder="Search" />
+      <span>
+        <mat-icon>close</mat-icon>
+      </span>
+    </div>
+  </div>
+  <div class="main-section">
+    <ng-container *ngFor="let chatRoom of (data.users | async)">
+      <div class="user-item">
+        <span class="status" [ngClass]="chatRoom.status"> </span>
+        <button (click)="onClick(chatRoom.id)">{{ chatRoom.firstName }}</button>
+      </div>
+    </ng-container>
+  </div>
+</div>

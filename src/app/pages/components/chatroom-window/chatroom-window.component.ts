@@ -25,6 +25,7 @@ export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChec
   ) {
     this.subscriptions.push(
       this.chatroomService.selectedChatroom.subscribe(chatroom => {
+        console.log(chatroom);
       if (chatroom) {
       this.chatroom = chatroom;
       } else {
@@ -62,7 +63,7 @@ export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChec
 
 ngOnChanges(changes: SimpleChanges) {
 
-  console.log();
+  console.log(changes);
   this.chatroomService.changeChatroom.next(changes.chatroomID.currentValue);
 
 }

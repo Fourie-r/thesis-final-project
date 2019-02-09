@@ -1,0 +1,118 @@
+@import '../../../../styles/variables.scss';
+
+.header {
+  margin-bottom: 20px;
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    h1 {
+      width: 90%;
+      text-align: center;
+      justify-content: center;
+      padding: 10px 0px;
+      align-self: stretch;
+
+    }
+     span {
+        align-self: stretch;
+        justify-self: flex-start;
+        cursor: pointer;
+        padding: 10px;
+      }
+  }
+
+  .input_bar {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    background-color: #e4eee9;
+    background-image: linear-gradient(315deg, #e4eee9 0%, #93a5ce 74%);
+
+    input {
+
+      width: 90%;
+      align-self: stretch;
+      background-color: #e4eee9;
+      background-image: linear-gradient(315deg, #e4eee9 0%, #93a5ce 74%);
+      border: none;
+    }
+    span {
+      align-self: stretch;
+      display: block;
+      width: 10%;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+}
+
+.user-item {
+  height: auto;
+  width: 100%;
+  border-radius: 1px;
+  align-items: flex-start;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 8px;
+  transition: ease-in 0.2s;
+  border-bottom: 2px solid #f3f3f3;
+  padding: 20px 0;
+  button {
+    background: white;
+    border: none;
+  }
+}
+
+.user-item:hover {
+  background-color: #f5f5f5;
+  color: #ddd;
+  transition: ease-in 0.1s;
+}
+
+.online {
+  background-color: #0fa;
+}
+
+.busy {
+  background-color: #fb0;
+}
+
+.offline {
+  background-color: #888;
+}
+
+.status {
+  border: 1px solid black;
+  display: inline-block;
+  min-width: 10px;
+  min-height: 10px;
+  border-radius: 50%;
+  margin: 10px 12px 0px 10px;
+}
+
+.unread {
+  background-color: lightcoral;
+}
+
+.startChat_button {
+  width: 60%;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 20px;
+  margin-right: 10px;
+  display: flex;
+  align-items: stretch;
+  span {
+    font-size: 0.7em;
+  }
+  align-self: flex-end;
+}
+.startChat_button:hover {
+  background-color: darken(#a098a5, 10%);
+
+  span {
+    color: white;
+  }
+}

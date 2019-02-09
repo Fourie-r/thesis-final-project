@@ -1,14 +1,18 @@
-<div class="chat-message d-flex">
+<div class="chat-message" [ngClass]="{ isOwnMessage: isOwnMessage }">
   <div class="image-wrapper">
-    <img [src]="message.sender.photoUrl" class="rounded-circle">
+    <img [src]="message.sender.photoUrl" class="rounded-circle" />
   </div>
-  <div class="buble d-flex flex-column">
-    <div class="name">
-      {{message.sender.firstName}} {{message.sender.lastName}}
+  <div class="buble">
+    <div class="name-row">
+      <div class="name">
+        {{ message.sender.firstName }} {{ message.sender.lastName }}
+      </div>
+      <small class="timestamp">{{
+        message.createdAt.toDate() | date: 'medium'
+      }}</small>
     </div>
-    <small class="timestamp">{{message.createdAt.toDate() | date:'medium'}}</small>
-    <div class="message alert alert-info">
-      {{message.message}}
+    <div class="message">
+      {{ message.message }}
     </div>
   </div>
 </div>
