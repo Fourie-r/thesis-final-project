@@ -1,4 +1,15 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewChecked,
+  ElementRef,
+  ViewChild,
+  Input,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges
+} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ChatroomService } from '../../../services/chatroom.service';
@@ -9,8 +20,8 @@ import { LoadingService } from '../../../services/loading.service';
   templateUrl: './chatroom-window.component.html',
   styleUrls: ['./chatroom-window.component.scss']
 })
-export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChecked, OnChanges {
-
+export class ChatroomWindowComponent
+  implements OnInit, OnDestroy, AfterViewChecked, OnChanges {
   @ViewChild('scrollContainer') private scrollContainer: ElementRef;
   @Input() chatroomID;
 
@@ -26,17 +37,17 @@ export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChec
     this.subscriptions.push(
       this.chatroomService.selectedChatroom.subscribe(chatroom => {
         console.log(chatroom);
-      if (chatroom) {
-      this.chatroom = chatroom;
-      } else {
-        this.subscriptions.push(this.chatroomService.newChatroom.subscribe(newChatroom => {
-          this.chatroom = newChatroom;
-        }));
-      }
-      console.log(chatroom);
-      this.loadingService.isLoading.next(false);
-    }));
+        this.chatroom = chatroom;
+        this.loadingService.isLoading.next(false);
+      })
+    );
+    this.subscriptions.push(
+      this.chatroomService.newChatroom.subscribe(newChatroom => {
+        this.chatroom = newChatroom;
+        this.loadingService.isLoading.next(false);
 
+      })
+    );
   }
 
   ngOnInit() {
@@ -50,23 +61,19 @@ export class ChatroomWindowComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   private scrollToBottom(): void {
-
     try {
       this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
   }
 
-ngOnChanges(changes: SimpleChanges) {
-
-  console.log(changes);
-  this.chatroomService.changeChatroom.next(changes.chatroomID.currentValue);
-
-}
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    this.chatroomService.changeChatroom.next(changes.chatroomID.currentValue);
+  }
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());

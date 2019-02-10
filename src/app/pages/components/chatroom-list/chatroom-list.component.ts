@@ -12,6 +12,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { UserListComponent } from '../user-list/user-list.component';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chatroom-list',
@@ -30,13 +31,15 @@ export class ChatroomListComponent implements OnInit, OnDestroy {
   ) {}
 
   status = '';
+  statArr = [];
   @Output() valueChange = new EventEmitter();
   chatrooms = [];
   subsciptions: Subscription[] = [];
   divItems = document.getElementsByClassName('chatroom-list-item');
 
-  ngOnInit() {}
+  ngOnInit() {
 
+  }
 
   passID(id) {
     console.log(id);
@@ -61,7 +64,7 @@ export class ChatroomListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed with', result);
-      this.passID(result);
+      this.chatroomService.createChatroom.next(result);
     });
   }
 

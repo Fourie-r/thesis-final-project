@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
   }
 
   public logout(): void {
+    this.drawer.close();
+    this.chatroomService.setCurrentChatroom('');
     this.authService.logout();
   }
   toggle() {

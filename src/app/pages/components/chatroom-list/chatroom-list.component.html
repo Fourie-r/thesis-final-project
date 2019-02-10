@@ -1,9 +1,22 @@
 <div class="h-100 d-flex flex-column chatroom-list">
-  <button class="startChat_button" (click)="startChat()"> <span>+ Chat</span></button>
-<ng-container  *ngFor="let chatRoom of chatroomService.chatrooms | async; let i=index">
-  <div class="chatroom-list-item" [style.background]="selected==i?'#dcf8c6':''" (click)="selected=i" (click)="passID(chatRoom.user.id)">
-    <span class="status" [ngClass]="chatRoom.user.status"> </span>
-    {{chatRoom.user.firstName}}
-  </div>
-</ng-container>
+  <button class="startChat_button" (click)="startChat()">
+    <span>+ Chat</span>
+  </button>
+  <ng-container
+    *ngFor="let chatRoom of (chatroomService.chatrooms | async); let i = index"
+  >
+    <div
+      class="chatroom-list-item"
+      [style.background]="selected == i ? '#dcf8c6' : ''"
+      (click)="selected = i"
+      (click)="passID(chatRoom.user.id)"
+    >
+      <span class="status" [ngClass]="chatroomService.statArr[i] | async"> </span>
+      {{ chatRoom.user.firstName }}
+        <ng-container *ngIf="chatRoom.unread">
+          <span class="badge" matBadge="&#8288;" matBadgeOverlap="true" matBadgeColor="accent"></span>
+        </ng-container>
+    </div>
+
+  </ng-container>
 </div>

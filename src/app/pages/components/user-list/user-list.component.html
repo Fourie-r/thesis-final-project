@@ -17,9 +17,9 @@
   </div>
   <div class="main-section">
     <ng-container *ngFor="let chatRoom of (data.users | async)">
-      <div class="user-item">
+      <div class="user-item" (click)="onClick(chatRoom.id)">
         <span class="status" [ngClass]="chatRoom.status"> </span>
-        <button (click)="onClick(chatRoom.id)">{{ chatRoom.firstName }}</button>
+        {{ chatRoom.firstName }}
       </div>
     </ng-container>
   </div>

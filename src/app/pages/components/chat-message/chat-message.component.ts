@@ -21,8 +21,10 @@ export class ChatMessageComponent implements OnInit {
 
     this.authService.currentUser.subscribe(user => {
 
+      if (user) {
       this.ownEmail = user.email;
       this.isOwnMessage = this.ownEmail === this.userEmail;
+      }
     });
   }
 
