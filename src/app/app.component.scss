@@ -10,8 +10,8 @@
   }
 }
 .example-container {
-  height: 100%;
-/*   position: absolute;
+  height: calc(100vh - 80px) !important;
+  /*   position: absolute;
   top:0;
   left: 0;
   margin-left: -800px; */

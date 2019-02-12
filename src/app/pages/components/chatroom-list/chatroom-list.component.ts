@@ -64,7 +64,10 @@ export class ChatroomListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed with', result);
+      if (result) {
       this.chatroomService.createChatroom.next(result);
+
+      }
     });
   }
 

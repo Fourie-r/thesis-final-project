@@ -92,7 +92,11 @@ export class AddTaskComponent implements OnInit {
       backgroundColor: '#fcf8e3'
     };
 
-
+    this.title = null;
+    this.selectedPeople = null;
+    this.selectedSkills = null;
+    this.startDate = null;
+    this.endDate = null;
 
     this.taskService.addTasks(taskObject);
   }

@@ -41,7 +41,7 @@
         <kendo-datepicker [disabled]="false" [(ngModel)]="endDate" [value]="endDate"></kendo-datepicker>
       </td>
       <td>
-        <button style="float: right;" [disabled]="!title" kendoButton [primary]="true" (click)="addTask()">
+        <button [disabled]="!title" kendoButton [primary]="true" (click)="addTask()">
            Add Task
         </button>
       </td>

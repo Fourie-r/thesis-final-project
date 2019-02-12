@@ -33,7 +33,7 @@
 
       .timestamp {
         color: darken($light-grey, 15%);
-        font-size: 0.4em;
+        font-size: 0.6em;
         display: flex;
         align-self: center;
       }
@@ -48,6 +48,7 @@
 }
 .isOwnMessage {
 
+  justify-content: flex-end;
   display: flex;
   flex-direction: row;
   .image-wrapper {
