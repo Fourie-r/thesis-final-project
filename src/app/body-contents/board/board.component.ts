@@ -1,15 +1,10 @@
 import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
-import { Observable } from 'rxjs';
 import { EmitterService } from './../../services/emitter.service';
 
 import { TaskModel } from './../../shared/models/tasks.model';
-import { ProgressTaskModel } from './../../shared/models/progress-task.model';
-import { CompletedTaskModel } from './../../shared/models/completed-task.model';
 import { TaskService } from './../../services/task.service';
-import { PeoplesModel } from './../../shared/models/peoples.model';
 import { PeoplesService } from './../../services/peoples.service';
 import { User } from 'src/app/classes/user.model';
-
 
 @Component({
   selector: 'app-board',
@@ -20,9 +15,10 @@ export class BoardComponent implements OnInit {
   tasks: TaskModel[] = [];
   peoples: User[] = [];
   emitter = EmitterService.get('PeoplesChannel');
-  listTeamOne: ProgressTaskModel[] = [];
-  listTeamTwo: CompletedTaskModel[] = [];
+  listTeamOne: TaskModel[] = [];
+  listTeamTwo: TaskModel[] = [];
   public opened = false;
+  private taskId = '';
 
   public pieData: any = [
     { category: 'In Progress', value: 2 },
@@ -36,7 +32,6 @@ export class BoardComponent implements OnInit {
   public selectedTaskEndDate: string;
   public seletedTaskPeople: string;
 
-
   constructor(
     public taskService: TaskService,
     public peoplesService: PeoplesService,
@@ -46,8 +41,6 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.getAllPeople();
     this.getAllTasks();
-    this.getAllCompletedTask();
-    this.getAllInProgressTask();
 
     this.emitter.subscribe(msg => {
       if (msg.msg === 'BroadcastTask') {
@@ -60,35 +53,32 @@ export class BoardComponent implements OnInit {
   getAllTasks() {
     // Get all tasks
     this.taskService.getTasks().subscribe(
-      tasks => {
+      (tasks: TaskModel[]) => {
+        console.log(' GETTING TASKS');
+        this.tasks = [];
+        this.listTeamOne = [];
+        this.listTeamTwo = [];
         console.log(tasks);
-        this.tasks = tasks;
-      },
-      err => {
-        // Log errors if any
-        console.log(err);
-      }
-    );
-  }
+        tasks.forEach(task => {
+          if (task.destination === 'ToDo') {
+            this.tasks.push(task);
+          }
 
-  // Get ALl Completed Task
-  getAllCompletedTask() {
-    this.taskService.getCompletedTasks().subscribe(
-      tasks => {
-        this.listTeamTwo = tasks;
-      },
-      err => {
-        // Log errors if any
-        console.log(err);
-      }
-    );
-  }
+          if (task.destination === 'Progress') {
+            this.listTeamOne.push(task);
+          }
 
-  // Get ALl in-progress Task
-  getAllInProgressTask() {
-    this.taskService.getInProgressTasks().subscribe(
-      tasks => {
-        this.listTeamOne = tasks;
+          if (task.destination === 'Completed') {
+            this.listTeamTwo.push(task);
+          }
+        });
+        this.pieData[0].value = this.listTeamOne.length;
+        this.pieData[1].value = this.listTeamTwo.length;
+
+        this.pieData = [
+          { category: 'In Progress', value: this.listTeamOne.length },
+          { category: 'Completed', value: this.listTeamTwo.length }
+        ];
       },
       err => {
         // Log errors if any
@@ -102,7 +92,6 @@ export class BoardComponent implements OnInit {
     // Get all peoples
     this.peoplesService.getPeople().subscribe(
       peoples => {
-
         this.peoples = peoples;
         console.log(peoples);
       },
@@ -119,63 +108,14 @@ export class BoardComponent implements OnInit {
     console.log(data);
     if (data === 'ToDo') {
       // this.toastr.success('Task ' + item.title + ' added in To Do board!');
+      this.taskService.updateTasks(item.id);
     }
     if (data === 'Progress') {
-      const object = {
-        id: item.id,
-        title: item.title,
-        people: item.people,
-        skills: item.skills,
-        startDate: item.startDate,
-        endDate: item.endDate,
-        start: item.startDate,
-        end: item.endDate,
-        backgroundColor: '#dff0d8'
-      };
-
-      this.taskService.addTasksInProgress(object);
-
-      /*
-      // Subscribe to observable
-      taskOperation.subscribe(
-        task => {
-          // this.listTeamOne.push(object);
-          // this.toastr.success('Task ' + item.title + ' added in Progress board!');
-        },
-        err => {
-          // Log errors if any
-          console.log(err);
-        }
-      ); */
-
+      this.taskService.addTasksInProgress(item.id);
     }
 
     if (data === 'Completed') {
-      const object = {
-        id: item.id,
-        title: item.title,
-        people: item.people,
-        skills: item.skills,
-        startDate: item.startDate,
-        endDate: item.endDate,
-        start: item.startDate,
-        end: item.endDate,
-        backgroundColor: '#d9edf7'
-      };
-
-      this.taskService.addTasksInCompleted(object);
-      /*
-      // Subscribe to observable
-      taskOperation.subscribe(
-        task => {
-          // this.listTeamTwo.push(object);
-          // this.toastr.success('Task ' + item.title + ' added in Completed!');
-        },
-        err => {
-          // Log errors if any
-          console.log(err);
-        }
-      ); */
+      this.taskService.addTasksInCompleted(item.id);
     }
     this.pieData[0].value = this.listTeamOne.length;
     this.pieData[1].value = this.listTeamTwo.length;
@@ -196,35 +136,31 @@ export class BoardComponent implements OnInit {
     this.selectedTaskEndDate = task.endDate;
     this.seletedTaskPeople = task.people;
     this.selectedTaskData = data;
+    this.taskId = task.id;
+
   }
   public close() {
     this.opened = false;
   }
 
-  saveToBacklog() {
+  updateTitle() {
+    this.taskService.upodateTaskDescription( this.taskId, this.seletedTaskTitle);
+    this.close();
+  }
 
+  saveToBacklog() {
     this.deleteTask();
-    this.taskService.db.collection('backlog').doc(this.selectedTask.id).set(this.selectedTask);
+    this.taskService.db
+      .collection('backlog')
+      .doc(this.selectedTask.id)
+      .set(this.selectedTask);
 
     this.close();
   }
 
   deleteTask() {
     console.log(this.selectedTaskData);
-    if (this.selectedTaskData === 'ToDo') {
-
-      this.taskService.removeTasksInToDo(this.selectedTask.id);
-    }
-
-    if (this.selectedTaskData === 'Progress') {
-
-      this.taskService.removeTasksInProgress(this.selectedTask.id);
-
-    }
-    if (this.selectedTaskData === 'Completed') {
-
-      this.taskService.removeTasksInCompleted(this.selectedTask.id);
-    }
+    this.taskService.removeTask(this.selectedTask.id);
     this.close();
   }
 }

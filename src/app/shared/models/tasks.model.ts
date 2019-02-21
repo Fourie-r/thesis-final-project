@@ -8,4 +8,5 @@ export class TaskModel {
   start?: Date;
   end?: Date;
   backgroundColor?: string;
+  destination?: string;
 }

@@ -16,6 +16,7 @@
   }
   .remaining {
     color: #255C69;
+    margin-top: 20px;
   }
   .panel {
     border-color: #d6e9c6;
@@ -32,8 +33,9 @@
   .popup-wrapper {
     .main-body {
       text-align: center;
-      h2 {
+      .textarea {
         font-size: 20px;
+        margin-bottom: 10px;
       }
       img {
         width: 110px;

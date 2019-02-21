@@ -89,7 +89,9 @@ export class AddTaskComponent implements OnInit {
       endDate: this.endDate,
       start: this.startDate,
       end: this.endDate,
-      backgroundColor: '#fcf8e3'
+      backgroundColor: '#fcf8e3',
+      destination: 'ToDo'
+
     };
 
     this.title = null;
