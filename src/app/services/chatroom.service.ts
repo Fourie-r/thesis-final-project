@@ -158,4 +158,9 @@ export class ChatroomService {
       map((user: User) => user.status)
     );
   }
+
+  public getUnread(user) {
+
+    return this.db.collection(`chatrooms/${user.id}/chatrooms`).valueChanges();
+  }
 }

@@ -4,9 +4,9 @@
             <p>Task Board</p>
 
             <div>
-                <span>Total Task: <b>{{tasks.length + listTeamOne.length + listTeamTwo.length}} </b>--</span>
-                <span>In Progress Task: <b>{{listTeamOne.length }} </b>--</span>
-                <span>Completed Task: <b>{{listTeamTwo.length }}</b></span>
+                <span>Total Task: <b>{{tasks.length + tasksInProgress.length + tasksInCompleted.length}} </b>--</span>
+                <span>In Progress Task: <b>{{tasksInProgress.length }} </b>--</span>
+                <span>Completed Task: <b>{{tasksInCompleted.length }}</b></span>
             </div>
         </div>
         <br>
@@ -38,9 +38,9 @@
                     <div class="panel-heading">
                         In Progress
                     </div>
-                    <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamOne">
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="tasksInProgress">
                         <ul class="list-group">
-                            <li *ngFor="let item of listTeamOne; let i = index" dnd-droppable (onDropSuccess)="addTo($event, item, 'Progress')"
+                            <li *ngFor="let item of tasksInProgress; let i = index" dnd-droppable (onDropSuccess)="addTo($event, item, 'Progress')"
                                 (click)="openTask(item, 'Progress')" class="list-group-item" dnd-sortable [sortableIndex]="i">
                                 <span *ngFor="let people of peoples">
                                     <img *ngIf="item.people == people.id" src="{{people.photoUrl}}" alt="{{people.firstName}}">
@@ -58,9 +58,9 @@
                     <div class="panel-heading">
                         Completed
                     </div>
-                    <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamTwo">
+                    <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="tasksInCompleted">
                         <ul class="list-group">
-                            <li *ngFor="let item of listTeamTwo; let i = index" dnd-droppable (onDropSuccess)="addTo($event, item, 'Completed')"
+                            <li *ngFor="let item of tasksInCompleted; let i = index" dnd-droppable (onDropSuccess)="addTo($event, item, 'Completed')"
                                 (click)="openTask(item,'Completed')" class="list-group-item" dnd-sortable [sortableIndex]="i">
                                 <span *ngFor="let people of peoples">
                                     <img *ngIf="item.people == people.id" src="{{people.photoUrl}}" alt="{{people.firstName }}">
@@ -87,7 +87,7 @@
         <div class="popup-wrapper">
             <kendo-dialog title="Task Details" *ngIf="opened" (close)="close('cancel')">
                 <div class="main-body">
-                    <h2>{{seletedTaskTitle}}</h2>
+                    <textarea class="textarea" kendoTextArea [(ngModel)]="seletedTaskTitle"></textarea>
                     <p>Start :{{selectedTaskStartDate.toDate() | date}} - End: {{selectedTaskEndDate.toDate() | date}}</p>
                     <p class="people-name" style="color: #33c8af">Responsible People</p>
                     <span *ngFor="let people of peoples">

@@ -1,7 +1,13 @@
 <nav class="navbar">
   <span class="brand">ChatApp</span>
   <ul *ngIf="currentUser; else loggedOut">
-    <li class="nitem"><a (click)="toggle()" class="nlink">Chat</a></li>
+    <li class="nitem"><a (click)="toggle()" class="nlink">
+        <ng-container *ngIf="unread">
+            <span class="badge" matBadge="&#8288;" matBadgeOverlap="true" matBadgeColor="accent"></span>
+          </ng-container>
+      Chat</a></li>
+    <li class="nitem" *ngIf="!backlog"><a routerLink="/backlog" class="nlink" (click)="backlog=!backlog">Backlog</a></li>
+    <li class="nitem" *ngIf="backlog"><a routerLink="/board" class="nlink" (click)="backlog=!backlog">Board</a></li>
     <li class="nitem"><a (click)="logout()" class="nlink">Logout</a></li>
   </ul>
 </nav>

@@ -1,16 +1,12 @@
-// Imports
 import { Injectable } from '@angular/core';
 import { TaskModel } from '../shared/models/tasks.model';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
 
-// Import RxJs required methods
 
 @Injectable()
 export class TaskService {
-  // Resolve HTTP using the constructor
   constructor(public db: AngularFirestore) {}
-  // private instance variable to hold base url
 
   getTasks(): Observable<any> {
     return this.db.collection('tasks').valueChanges();
@@ -44,15 +40,6 @@ export class TaskService {
       .catch(err => console.log(err));
   }
   addTasksInProgress(id: string) {
-    /* this.removeTasksInToDo(body.id);
-    this.removeTasksInCompleted(body.id);
-
-    return this.db
-      .collection('progressTasks')
-      .doc(body.id)
-      .set(body)
-      .catch(err => console.log(err)); */
-
     this.db
       .doc(`tasks/${id}`)
       .update({ destination: 'Progress' })
@@ -60,15 +47,6 @@ export class TaskService {
   }
 
   addTasksInCompleted(id: string) {
-    /* console.log(body);
-    this.removeTasksInProgress(body.id);
-    this.removeTasksInToDo(body.id);
-
-    return this.db
-      .collection('completedTasks')
-      .doc(body.id)
-      .set(body)
-      .catch(err => console.log(err)); */
     this.db
       .doc(`tasks/${id}`)
       .update({ destination: 'Completed' })

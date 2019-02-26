@@ -1,12 +1,10 @@
 // Imports
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
 import { PeoplesModel } from '../shared/models/peoples.model';
 import { Observable } from 'rxjs';
-import { map, take, catchError } from 'rxjs/operators';
-import { User } from 'src/app/classes/user.model';
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { map, catchError } from 'rxjs/operators';
+import { AngularFirestore} from '@angular/fire/firestore';
 
 
 @Injectable()

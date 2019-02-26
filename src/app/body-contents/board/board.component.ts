@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EmitterService } from './../../services/emitter.service';
-
 import { TaskModel } from './../../shared/models/tasks.model';
 import { TaskService } from './../../services/task.service';
 import { PeoplesService } from './../../services/peoples.service';
@@ -11,12 +10,13 @@ import { User } from 'src/app/classes/user.model';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
+
 export class BoardComponent implements OnInit {
   tasks: TaskModel[] = [];
   peoples: User[] = [];
   emitter = EmitterService.get('PeoplesChannel');
-  listTeamOne: TaskModel[] = [];
-  listTeamTwo: TaskModel[] = [];
+  tasksInProgress: TaskModel[] = [];
+  tasksInCompleted: TaskModel[] = [];
   public opened = false;
   private taskId = '';
 
@@ -35,7 +35,6 @@ export class BoardComponent implements OnInit {
   constructor(
     public taskService: TaskService,
     public peoplesService: PeoplesService,
-    vcr: ViewContainerRef
   ) {}
 
   ngOnInit() {
@@ -54,30 +53,28 @@ export class BoardComponent implements OnInit {
     // Get all tasks
     this.taskService.getTasks().subscribe(
       (tasks: TaskModel[]) => {
-        console.log(' GETTING TASKS');
         this.tasks = [];
-        this.listTeamOne = [];
-        this.listTeamTwo = [];
-        console.log(tasks);
+        this.tasksInProgress = [];
+        this.tasksInCompleted = [];
         tasks.forEach(task => {
           if (task.destination === 'ToDo') {
             this.tasks.push(task);
           }
 
           if (task.destination === 'Progress') {
-            this.listTeamOne.push(task);
+            this.tasksInProgress.push(task);
           }
 
           if (task.destination === 'Completed') {
-            this.listTeamTwo.push(task);
+            this.tasksInCompleted.push(task);
           }
         });
-        this.pieData[0].value = this.listTeamOne.length;
-        this.pieData[1].value = this.listTeamTwo.length;
+        this.pieData[0].value = this.tasksInProgress.length;
+        this.pieData[1].value = this.tasksInCompleted.length;
 
         this.pieData = [
-          { category: 'In Progress', value: this.listTeamOne.length },
-          { category: 'Completed', value: this.listTeamTwo.length }
+          { category: 'In Progress', value: this.tasksInProgress.length },
+          { category: 'Completed', value: this.tasksInCompleted.length }
         ];
       },
       err => {
@@ -93,7 +90,6 @@ export class BoardComponent implements OnInit {
     this.peoplesService.getPeople().subscribe(
       peoples => {
         this.peoples = peoples;
-        console.log(peoples);
       },
       err => {
         // Log errors if any
@@ -104,8 +100,6 @@ export class BoardComponent implements OnInit {
 
   // Drop on success
   addTo(event: any, item, data) {
-    console.log(item);
-    console.log(data);
     if (data === 'ToDo') {
       // this.toastr.success('Task ' + item.title + ' added in To Do board!');
       this.taskService.updateTasks(item.id);
@@ -117,19 +111,18 @@ export class BoardComponent implements OnInit {
     if (data === 'Completed') {
       this.taskService.addTasksInCompleted(item.id);
     }
-    this.pieData[0].value = this.listTeamOne.length;
-    this.pieData[1].value = this.listTeamTwo.length;
+    this.pieData[0].value = this.tasksInProgress.length;
+    this.pieData[1].value = this.tasksInCompleted.length;
 
     this.pieData = [
-      { category: 'In Progress', value: this.listTeamOne.length },
-      { category: 'Completed', value: this.listTeamTwo.length }
+      { category: 'In Progress', value: this.tasksInProgress.length },
+      { category: 'Completed', value: this.tasksInCompleted.length }
     ];
   }
 
   // Open Task Popup details
   openTask(task, data: string) {
     this.opened = true;
-    console.log(task);
     this.selectedTask = task;
     this.seletedTaskTitle = task.title;
     this.selectedTaskStartDate = task.startDate;
@@ -159,7 +152,6 @@ export class BoardComponent implements OnInit {
   }
 
   deleteTask() {
-    console.log(this.selectedTaskData);
     this.taskService.removeTask(this.selectedTask.id);
     this.close();
   }
