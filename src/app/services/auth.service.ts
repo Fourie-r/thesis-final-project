@@ -12,6 +12,7 @@ import {
 } from '@angular/fire/firestore';
 import { switchMap } from 'rxjs/operators';
 import { of, from } from 'rxjs';
+import { LoadingService } from './loading.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,7 @@ export class AuthService {
   constructor(
     private router: Router,
     private alertService: AlertService,
+    private loadingService: LoadingService,
     private afAuth: AngularFireAuth,
     private db: AngularFirestore
   ) {
@@ -89,7 +91,6 @@ export class AuthService {
   }
 
   public logout(): void {
-    console.log(this.currentUserSnapshot.id);
     this.db
       .doc(`users/${this.currentUserSnapshot.id}`)
       .update({
@@ -97,6 +98,8 @@ export class AuthService {
       })
       .then(() => {
         this.afAuth.auth.signOut().then(() => {
+          this.loadingService.isLoading.next(false);
+
           this.router.navigate(['/login']);
           this.alertService.alerts.next(
             new Alert('You have successfully logged out', AlertType.Success)

@@ -43,13 +43,7 @@ export class ChatroomListComponent implements OnInit, OnDestroy {
 
   passID(id) {
     console.log(id);
-    this.chatroomId = id;
-    this.valueChange.emit(this.chatroomId);
-  }
-
-  getNotifyUnread(id): string {
-    this.status = this.notifyUnread(id);
-    return this.status;
+    this.chatroomService.changeChatroom.next(id);
   }
 
   startChat() {
@@ -71,24 +65,6 @@ export class ChatroomListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public notifyUnread(id: string): string {
-    let isTrue = 'false';
-    const dbId = this.authService.currentUserSnapshot.id + '_' + id;
-    this.chatroomService.getChatrooms().subscribe(val => {
-      console.log(val);
-      val.forEach(element => {
-        if (element.id === dbId) {
-          if (element.unread) {
-            console.log(element);
-            isTrue = 'unread';
-            return isTrue;
-          }
-        }
-      });
-    });
-
-    return isTrue;
-  }
   ngOnDestroy() {
     this.subsciptions.forEach(sub => sub.unsubscribe());
   }

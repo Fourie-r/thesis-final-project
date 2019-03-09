@@ -15,7 +15,6 @@ export class BacklogComponent implements OnInit, OnDestroy {
   constructor(private tasKService: TaskService) {}
 
   ngOnInit() {
-    this.subscriptions.push(
       this.tasKService
         .getBacklogTasks()
         .subscribe((tasks: TaskModel[]) => {
@@ -40,11 +39,9 @@ export class BacklogComponent implements OnInit, OnDestroy {
             const newTask = JSON.parse(JSON.stringify(task));
             newTask.startDate = dateString;
             newTask.endDate = endDateString;
-            console.log(newTask);
             this.backlogTasks.push(newTask);
           });
-        })
-    );
+        });
   }
 
 

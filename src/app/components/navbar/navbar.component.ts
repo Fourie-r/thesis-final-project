@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ChatroomService } from 'src/app/services/chatroom.service';
+import { ChatroomService } from '../../services/chatroom.service';
+import { LoadingService } from '../../services/loading.service';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class NavbarComponent implements OnInit {
   public backlog = false;
   public unread = false;
   @Input() drawer;
-  constructor(public authService: AuthService, private chatroomService: ChatroomService) { }
+  constructor(public authService: AuthService, private chatroomService: ChatroomService, private loadingService: LoadingService) { }
 
   ngOnInit() {
     this.authService.currentUser.subscribe( user => {
@@ -34,6 +35,8 @@ export class NavbarComponent implements OnInit {
   }
 
   public logout(): void {
+    this.loadingService.isLoading.next(true);
+
     this.drawer.close();
     this.chatroomService.setCurrentChatroom('');
     this.authService.logout();
@@ -41,5 +44,9 @@ export class NavbarComponent implements OnInit {
   toggle() {
     this.drawer.toggle();
     this.chatroomService.chatrooms = this.chatroomService.getChatrooms();
+    if (!this.drawer.opened) {
+      this.chatroomService.setCurrentChatroom();
+    }
+
   }
 }

@@ -10,7 +10,7 @@
 
 <ng-template #chatMessages>
     <div class="message-wrapper h-100" #scrollContainer>
-      <ng-container *ngFor="let message of messages">
+      <ng-container *ngFor="let message of chatroomService.selectedChatroomMessages | async">
         <app-chat-message [message]="message"></app-chat-message>
       </ng-container>
     </div>

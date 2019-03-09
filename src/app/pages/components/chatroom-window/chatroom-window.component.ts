@@ -7,11 +7,9 @@ import {
   ViewChild,
   Input,
   OnChanges,
-  SimpleChange,
   SimpleChanges
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { ChatroomService } from '../../../services/chatroom.service';
 import { LoadingService } from '../../../services/loading.service';
 
@@ -30,8 +28,7 @@ export class ChatroomWindowComponent
   public messages: Observable<any>;
 
   constructor(
-    private route: ActivatedRoute,
-    private chatroomService: ChatroomService,
+    public chatroomService: ChatroomService,
     private loadingService: LoadingService
   ) {
     this.subscriptions.push(
@@ -39,10 +36,13 @@ export class ChatroomWindowComponent
         console.log(chatroom);
         this.chatroom = chatroom;
         this.loadingService.isLoading.next(false);
+        if(chatroom) this.chatroomService.setCurrentChatroom(chatroom.user.id);
+
       })
     );
     this.subscriptions.push(
       this.chatroomService.newChatroom.subscribe(newChatroom => {
+        console.log(newChatroom)
         this.chatroom = newChatroom;
         this.loadingService.isLoading.next(false);
 
@@ -52,12 +52,6 @@ export class ChatroomWindowComponent
 
   ngOnInit() {
     this.scrollToBottom();
-    this.subscriptions.push(
-      this.chatroomService.selectedChatroomMessages.subscribe(messages => {
-        this.messages = messages;
-        this.loadingService.isLoading.next(false);
-      })
-    );
   }
 
   private scrollToBottom(): void {
@@ -71,8 +65,7 @@ export class ChatroomWindowComponent
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    this.chatroomService.changeChatroom.next(changes.chatroomID.currentValue);
+     // this.chatroomService.changeChatroom.next(changes.chatroomID.currentValue);
   }
 
   ngOnDestroy() {
