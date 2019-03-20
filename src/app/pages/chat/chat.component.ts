@@ -13,6 +13,7 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
   }
 
+  // assigns and propagates the id through the component chain
   setId(id) {
     console.log(id);
     this.chatroomId = id;

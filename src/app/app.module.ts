@@ -3,7 +3,7 @@ import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { AlertModule } from 'ngx-bootstrap';
 import { NgxLoadingModule } from 'ngx-loading';
 import { AngularFireModule } from '@angular/fire';
@@ -45,8 +45,8 @@ import { BodyContentsComponent } from './body-contents/body-contents.component';
 import { PeoplesComponent } from './body-contents/peoples/peoples.component';
 import { AddTaskComponent } from './body-contents/add-task/add-task.component';
 import { BoardComponent } from './body-contents/board/board.component';
-import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { HomeComponent } from './pages/home/home.component';
 
 
 import { firebase } from '../environments/environment';
@@ -78,10 +78,10 @@ import { UserListComponent } from './pages/components/user-list/user-list.compon
     PeoplesComponent,
     AddTaskComponent,
     BoardComponent,
-    HeaderComponent,
     FooterComponent,
     BacklogComponent,
-    UserListComponent
+    UserListComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

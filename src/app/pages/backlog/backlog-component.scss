@@ -1,4 +1,6 @@
 
+@import "../../../styles/variables.scss";
+
 h1 {
 
   height: 50px;
@@ -15,27 +17,30 @@ body {
   height: 100%;
   width: 100%;
 }
-table {
-  border-collapse: collapse;
+table  {
+  border-collapse: separate;
+  border-spacing: 0 10px;
   margin: 20px 30px;
   min-width: 60%;
+
 }
 
-td, th {
-  border: 1px solid black;
-}
 
 tr {
 
 text-align: center;
 padding: 10px;
-
-
-
+background-color: lighten($primary, 40%);
+margin: 10px 0px !important;
 }
+
+#row:hover {
+  color: black;
+  background-color: #f3f3f3;
+}
+
 td  {
   padding: 5px 10px;
-  cursor: pointer;
 
 }
 
@@ -45,3 +50,17 @@ th {
   font-weight: 100;
 
 }
+.button {
+
+  border: none;
+  color: $primary;
+  padding: 0 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: white;
+  height: 100%;
+  padding: 5px;
+}
+
+

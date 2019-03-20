@@ -108,6 +108,7 @@ export class AuthService {
       });
   }
 
+  // userSnapshot provides more details about the user object
   setCurrentUserSnapshot(): void {
     this.currentUser.subscribe(user => (this.currentUserSnapshot = user));
   }

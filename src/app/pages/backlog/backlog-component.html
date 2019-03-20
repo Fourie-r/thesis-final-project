@@ -4,11 +4,14 @@
     <thead>
       <tr>
         <th>#</th>
-        <th>Task description</th>
-        <th>Date</th>
+        <th>Summary</th>
+        <th>Assignee</th>
+        <th>Labels</th>
+        <th>Date Created</th>
+        <th></th>
       </tr>
     </thead>
-    <tr *ngFor="let task of backlogTasks; let i = index">
+    <tr *ngFor="let task of backlogTasks; let i = index" id="row">
       <td>
         <span>{{ i + 1 }}</span>
       </td>
@@ -16,9 +19,18 @@
         <span>{{ task.title }}</span>
       </td>
       <td>
+        <span>{{ task.people }}</span>
+      </td>
+      <td>
+        <span>{{ task.skills[0].name }}</span>
+      </td>
+      <td>
         <span>{{ task.startDate }}</span>
       </td>
-        <button (click)="moveToSprint(i)">Move to sprint</button>
+      <td>
+        <span><button class="button" (click)="moveToSprint(i)">Move to sprint</button>
+</span>
+      </td>
     </tr>
   </table>
 </body>

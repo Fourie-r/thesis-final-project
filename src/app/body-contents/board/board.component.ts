@@ -10,7 +10,6 @@ import { User } from 'src/app/classes/user.model';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-
 export class BoardComponent implements OnInit {
   tasks: TaskModel[] = [];
   peoples: User[] = [];
@@ -34,7 +33,7 @@ export class BoardComponent implements OnInit {
 
   constructor(
     public taskService: TaskService,
-    public peoplesService: PeoplesService,
+    public peoplesService: PeoplesService
   ) {}
 
   ngOnInit() {
@@ -130,17 +129,20 @@ export class BoardComponent implements OnInit {
     this.seletedTaskPeople = task.people;
     this.selectedTaskData = data;
     this.taskId = task.id;
-
   }
+
+  // close edit ticket pop up
   public close() {
     this.opened = false;
   }
 
+  // edit ticket title
   updateTitle() {
-    this.taskService.upodateTaskDescription( this.taskId, this.seletedTaskTitle);
+    this.taskService.upodateTaskDescription(this.taskId, this.seletedTaskTitle);
     this.close();
   }
 
+  // send ticket to backlog
   saveToBacklog() {
     this.deleteTask();
     this.taskService.db
@@ -151,6 +153,7 @@ export class BoardComponent implements OnInit {
     this.close();
   }
 
+  // delete task
   deleteTask() {
     this.taskService.removeTask(this.selectedTask.id);
     this.close();

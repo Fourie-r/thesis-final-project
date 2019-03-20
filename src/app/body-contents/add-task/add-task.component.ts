@@ -1,4 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, ViewContainerRef } from '@angular/core';
+import { AlertService } from './../../services/alert.service';
+import {
+  Component,
+  OnInit,
+  ViewContainerRef
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { EmitterService } from './../../services/emitter.service';
 
@@ -11,7 +16,8 @@ import { SkillsService } from './../../services/skills.service';
 import { TaskModel } from './../../shared/models/tasks.model';
 import { TaskService } from './../../services/task.service';
 import { User } from 'src/app/classes/user.model';
-
+import { Alert } from 'src/app/classes/alert';
+import { AlertType } from 'src/app/enums/alert-type.enum';
 
 @Component({
   selector: 'app-add-task',
@@ -19,7 +25,6 @@ import { User } from 'src/app/classes/user.model';
   styleUrls: ['./add-task.component.scss']
 })
 export class AddTaskComponent implements OnInit {
-
   emitter = EmitterService.get('PeoplesChannel');
 
   peoples: User[] = [];
@@ -37,7 +42,9 @@ export class AddTaskComponent implements OnInit {
     public peoplesService: PeoplesService,
     public skillsService: SkillsService,
     public taskService: TaskService,
-    vcr: ViewContainerRef) {
+    private alertService: AlertService,
+    vcr: ViewContainerRef
+  ) {
     // this.toastr.setRootViewContainerRef(vcr);
   }
 
@@ -56,28 +63,28 @@ export class AddTaskComponent implements OnInit {
 
   getAllPeople() {
     // Get all peoples
-    this.peoplesService.getPeople()
-      .subscribe(
-        peoples => {
-          this.peoples = peoples;
-        },
-        err => {
-          // Log errors if any
-          console.log(err);
-        });
+    this.peoplesService.getPeople().subscribe(
+      peoples => {
+        this.peoples = peoples;
+      },
+      err => {
+        // Log errors if any
+        console.log(err);
+      }
+    );
   }
 
   getAllSkills() {
     // Get all skills
-    this.skillsService.getSkills()
-      .subscribe(
-        skills => {
-          this.skills = skills;
-        },
-        err => {
-          // Log errors if any
-          console.log(err);
-        });
+    this.skillsService.getSkills().subscribe(
+      skills => {
+        this.skills = skills;
+      },
+      err => {
+        // Log errors if any
+        console.log(err);
+      }
+    );
   }
 
   addTask() {
@@ -91,15 +98,27 @@ export class AddTaskComponent implements OnInit {
       end: this.endDate,
       backgroundColor: '#fcf8e3',
       destination: 'ToDo'
-
     };
 
-    this.title = null;
-    this.selectedPeople = null;
-    this.selectedSkills = null;
-    this.startDate = null;
-    this.endDate = null;
+    if (
+      !this.selectedPeople ||
+      !this.selectedSkills ||
+      !this.startDate ||
+      !this.endDate
+    ) {
+      const failedtaskCreation = new Alert(
+        'Task is not created, please fill all of the fields',
+        AlertType.Danger
+      );
+      return this.alertService.alerts.next(failedtaskCreation);
+    } else {
+      this.title = null;
+      this.selectedPeople = null;
+      this.selectedSkills = null;
+      this.startDate = null;
+      this.endDate = null;
 
-    this.taskService.addTasks(taskObject);
+      this.taskService.addTasks(taskObject);
+    }
   }
 }

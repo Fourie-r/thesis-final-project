@@ -21,6 +21,8 @@ export class AuthGuard implements CanActivate {
     private authService: AuthService,
     private alertService: AlertService
   ) {}
+
+  // interface to determine if user is logged in
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

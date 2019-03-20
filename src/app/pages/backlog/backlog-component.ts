@@ -14,44 +14,44 @@ export class BacklogComponent implements OnInit, OnDestroy {
   tasks: TaskModel[] = [];
   constructor(private tasKService: TaskService) {}
 
+  // creating the task forat for the backlog
   ngOnInit() {
-      this.tasKService
-        .getBacklogTasks()
-        .subscribe((tasks: TaskModel[]) => {
-          this.tasks = tasks;
-          this.backlogTasks = [];
-          tasks.forEach(task => {
-            let date = task.startDate['seconds'] * 1000;
-            let currentDate = new Date(date);
-            let dateObj = currentDate.getDate();
-            let month = currentDate.getMonth();
-            let year = currentDate.getFullYear();
-            const dateString = year + '.' + (month + 1) + '.' + dateObj;
+    this.tasKService.getBacklogTasks().subscribe((tasks: TaskModel[]) => {
+      this.tasks = tasks;
+      this.backlogTasks = [];
+      tasks.forEach(task => {
+        this.tasKService.getUser(task.people).subscribe(user => {
+          let date = task.startDate['seconds'] * 1000;
+          let currentDate = new Date(date);
+          let dateObj = currentDate.getDate();
+          let month = currentDate.getMonth();
+          let year = currentDate.getFullYear();
+          const dateString = year + '.' + (month + 1) + '.' + dateObj;
 
-            date = task.endDate['seconds'] * 1000;
-            currentDate = new Date(date);
-            dateObj = currentDate.getDate();
-            month = currentDate.getMonth();
-            year = currentDate.getFullYear();
+          date = task.endDate['seconds'] * 1000;
+          currentDate = new Date(date);
+          dateObj = currentDate.getDate();
+          month = currentDate.getMonth();
+          year = currentDate.getFullYear();
 
-            const endDateString = year + '.' + (month + 1) + '.' + dateObj;
+          const endDateString = year + '.' + (month + 1) + '.' + dateObj;
 
-            const newTask = JSON.parse(JSON.stringify(task));
-            newTask.startDate = dateString;
-            newTask.endDate = endDateString;
-            this.backlogTasks.push(newTask);
-          });
+          const newTask = JSON.parse(JSON.stringify(task));
+          newTask.startDate = dateString;
+          newTask.endDate = endDateString;
+          newTask.people = user.firstName + ' ' + user.lastName;
+          this.backlogTasks.push(newTask);
         });
+      });
+    });
   }
 
-
+  // method that sends the ticket to the board component
   moveToSprint(index: number) {
-
     this.tasKService.moveToSprint(this.tasks[index]);
   }
 
   ngOnDestroy() {
-
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
